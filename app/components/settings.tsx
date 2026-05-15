@@ -76,6 +76,7 @@ import {
   DeepSeek,
   SiliconFlow,
   AI302,
+  AnyAPI,
 } from "../constant";
 import { Prompt, SearchService, usePromptStore } from "../store/prompt";
 import { ErrorBoundary } from "./error";
@@ -1499,6 +1500,47 @@ export function Settings() {
       </>
   );
 
+  const anyapiConfigComponent = accessStore.provider ===
+    ServiceProvider.AnyAPI && (
+    <>
+      <ListItem
+        title={Locale.Settings.Access.AnyAPI.Endpoint.Title}
+        subTitle={
+          Locale.Settings.Access.AnyAPI.Endpoint.SubTitle +
+          AnyAPI.ExampleEndpoint
+        }
+      >
+        <input
+          aria-label={Locale.Settings.Access.AnyAPI.Endpoint.Title}
+          type="text"
+          value={accessStore.anyapiUrl}
+          placeholder={AnyAPI.ExampleEndpoint}
+          onChange={(e) =>
+            accessStore.update(
+              (access) => (access.anyapiUrl = e.currentTarget.value),
+            )
+          }
+        ></input>
+      </ListItem>
+      <ListItem
+        title={Locale.Settings.Access.AnyAPI.ApiKey.Title}
+        subTitle={Locale.Settings.Access.AnyAPI.ApiKey.SubTitle}
+      >
+        <PasswordInput
+          aria-label={Locale.Settings.Access.AnyAPI.ApiKey.Title}
+          value={accessStore.anyapiApiKey}
+          type="text"
+          placeholder={Locale.Settings.Access.AnyAPI.ApiKey.Placeholder}
+          onChange={(e) => {
+            accessStore.update(
+              (access) => (access.anyapiApiKey = e.currentTarget.value),
+            );
+          }}
+        />
+      </ListItem>
+    </>
+  );
+
   return (
     <ErrorBoundary>
       <div className="window-header" data-tauri-drag-region>
@@ -1864,6 +1906,7 @@ export function Settings() {
                   {chatglmConfigComponent}
                   {siliconflowConfigComponent}
                   {ai302ConfigComponent}
+                  {anyapiConfigComponent}
                 </>
               )}
             </>
